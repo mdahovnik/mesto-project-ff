@@ -1,0 +1,22 @@
+{
+  "name": "mesto-project-ff",
+  "version": "1.0.0",
+  "description": "https://github.com/mdahovnik/mesto-project-ff.git",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mdahovnik/mesto-project-ff.git"
+  },
+  "author": "Maksim Dahovnik",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mdahovnik/mesto-project-ff/issues"
+  },
+  "homepage": "https://github.com/mdahovnik/mesto-project-ff#readme",
+  "devDependencies": {
+    "webpack": "^5.93.0"
+  }
+}
