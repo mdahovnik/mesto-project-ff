@@ -1,9 +1,9 @@
 import { open } from "./modal";
-export { createCard, openPopupCard, likeCard, deleteCard };
+import { cardTemplate } from "./index";
+export { createCard, openCard, likeCard, deleteCard };
 
 
-function createCard(cardItem, deleteCard, openPopupCard, likeCard) {
-    const cardTemplate = document.querySelector('#card-template').content;
+function createCard(cardItem, deleteCard, openCard, likeCard) {
     const card = cardTemplate.querySelector('.card').cloneNode(true);
     const cardImage = card.querySelector('.card__image');
 
@@ -13,7 +13,7 @@ function createCard(cardItem, deleteCard, openPopupCard, likeCard) {
 
     card.addEventListener('click', (e) => {
         if (e.target.className === 'card__image')
-            openPopupCard(cardItem.link, cardItem.name);
+            openCard(cardItem.link, cardItem.name);
 
         if (e.target.classList.contains('card__like-button'))
             likeCard(e);
@@ -25,7 +25,7 @@ function createCard(cardItem, deleteCard, openPopupCard, likeCard) {
     return card;
 }
 
-function openPopupCard(link, name) {
+function openCard(link, name) {
     const popupImage = document.querySelector('.popup_type_image');
     popupImage.querySelector('.popup__image').src = link;
     popupImage.querySelector('.popup__image').alt = name;

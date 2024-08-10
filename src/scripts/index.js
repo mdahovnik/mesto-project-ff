@@ -1,6 +1,6 @@
 import '../pages/index.css';
 import { initialCards } from './cards';
-import { createCard, openPopupCard, likeCard, deleteCard } from './card';
+import { createCard, openCard, likeCard, deleteCard } from './card';
 import { open } from './modal';
 
 // DOM узлы
@@ -10,11 +10,11 @@ const profilePopup = document.querySelector('.popup_type_edit');
 const newCardPopup = document.querySelector('.popup_type_new-card');
 const nameInput = profilePopup.querySelector('.popup__input_type_name');
 const descriptionInput = profilePopup.querySelector('.popup__input_type_description');
-
+export const cardTemplate = document.querySelector('#card-template').content;
 
 // Вывести карточки на страницу
 initialCards.forEach(cardItem => {
-    placesList.append(createCard(cardItem, deleteCard, openPopupCard, likeCard));
+    placesList.append(createCard(cardItem, deleteCard, openCard, likeCard));
 });
 
 document.addEventListener('click', handlePageSectionButton);
@@ -44,6 +44,14 @@ function handlerNewCardSubmit(e) {
     e.preventDefault();
     let newCardName = newCardPopup.querySelector('.popup__input_type_card-name').value;
     let newCardUrl = newCardPopup.querySelector('.popup__input_type_url').value;
-    placesList.prepend(createCard({ name: newCardName, link: newCardUrl }, deleteCard, openPopupCard, likeCard));
+
+    placesList.prepend(createCard(
+        { name: newCardName, link: newCardUrl },
+        deleteCard,
+        openCard,
+        likeCard));
+
+    newCardPopup.querySelector('.popup__input_type_card-name').value = '';
+    newCardPopup.querySelector('.popup__input_type_url').value = '';
     newCardPopup.classList.remove('popup_is-opened');
 }
