@@ -1,22 +1,32 @@
-export { showPopup };
+export { openPopup };
 
-function showPopup(popupType) {
+const popups = document.querySelectorAll('.popup');
+
+function openPopup(popupType) {
     if (popupType) {
-        popupType.addEventListener('click', hidePopup);
-        document.addEventListener('keydown', hidePopup);
+        popupType.addEventListener('click', handlerOnClick);
+        document.addEventListener('keydown', handlerOnKeydown);
         popupType.classList.add('popup_is-opened');
     }
 }
 
-function hidePopup(e) {
-    if (isCloseClicked(e) || isOverlayClicked(e) || isEscapePressed(e)) {
-        document.querySelectorAll('.popup').forEach(popup => {
-            if (popup.classList.contains('popup_is-opened')) {
-                popup.classList.remove('popup_is-opened');
-                popup.removeEventListener('click', hidePopup);
-                document.removeEventListener('keydown', hidePopup);
-            }
-        });
+function closePopup(popupType) {
+    if (popupType.classList.contains('popup_is-opened')) {
+        popupType.removeEventListener('click', handlerOnClick);
+        document.removeEventListener('keydown', handlerOnKeydown);
+        popupType.classList.remove('popup_is-opened');
+    }
+}
+
+function handlerOnClick(e) {
+    if (isCloseClicked(e) || isOverlayClicked(e)) {
+        popups.forEach(popup => { closePopup(popup); });
+    }
+}
+
+function handlerOnKeydown(e) {
+    if (isEscapePressed(e)) {
+        popups.forEach(popup => { closePopup(popup); });
     }
 }
 
