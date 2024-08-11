@@ -53,16 +53,12 @@ function handlerNewCardSubmit(e) {
     let newCardName = newCardPopup.querySelector('.popup__input_type_card-name').value;
     let newCardUrl = newCardPopup.querySelector('.popup__input_type_url').value;
     let newCard = createCard({ name: newCardName, link: newCardUrl }, handlerOnLike, handlerOnDelete);
-    
-    addNewCard(newCard);
+
+    placesList.prepend(newCard);
     newCardPopup.querySelector('.popup__input_type_card-name').value = '';
     newCardPopup.querySelector('.popup__input_type_url').value = '';
     newCardPopup.removeEventListener('submit', handlerNewCardSubmit);
     newCardPopup.classList.remove('popup_is-opened');
-}
-
-function addNewCard(card) {
-    placesList.prepend(card);
 }
 
 function isClicked(element, e) {
