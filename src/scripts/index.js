@@ -1,7 +1,7 @@
 import '../pages/index.css';
 import { initialCards } from './cards';
 import { createCard, handlerOnLike, handlerOnDelete } from './card';
-import { openPopup } from './modal';
+import { openPopup, closePopup } from './modal';
 
 const content = document.querySelector('.content');
 const placesList = document.querySelector('.places__list');
@@ -13,7 +13,7 @@ export const cardTemplate = document.querySelector('#card-template').content;
 
 document.addEventListener('click', handlerPageButtons);
 
-export function handlerCardClicked(e) {
+function handlerCardClicked(e) {
     if (isClicked('card__image', e))
         openPopup(getImagePopup(e));
 }
@@ -45,20 +45,19 @@ function handlerProfileSubmit(e) {
     content.querySelector('.profile__title').textContent = nameInput.value;
     content.querySelector('.profile__description').textContent = descriptionInput.value;
     profilePopup.removeEventListener('submit', handlerProfileSubmit);
-    profilePopup.classList.remove('popup_is-opened');
+    closePopup(profilePopup);
 }
 
 function handlerNewCardSubmit(e) {
     e.preventDefault();
-    let newCardName = newCardPopup.querySelector('.popup__input_type_card-name').value;
-    let newCardUrl = newCardPopup.querySelector('.popup__input_type_url').value;
-    let newCard = createCard({ name: newCardName, link: newCardUrl }, handlerOnLike, handlerOnDelete);
+    const newCardName = newCardPopup.querySelector('.popup__input_type_card-name').value;
+    const newCardUrl = newCardPopup.querySelector('.popup__input_type_url').value;
+    const newCard = createCard({ name: newCardName, link: newCardUrl }, handlerOnLike, handlerOnDelete, handlerCardClicked);
 
     placesList.prepend(newCard);
-    newCardPopup.querySelector('.popup__input_type_card-name').value = '';
-    newCardPopup.querySelector('.popup__input_type_url').value = '';
+    newCardPopup.querySelector('.popup__form').reset();
     newCardPopup.removeEventListener('submit', handlerNewCardSubmit);
-    newCardPopup.classList.remove('popup_is-opened');
+    closePopup(newCardPopup);
 }
 
 function isClicked(element, e) {
@@ -66,5 +65,5 @@ function isClicked(element, e) {
 }
 
 initialCards.forEach(cardItem => {
-    placesList.append(createCard(cardItem, handlerOnLike, handlerOnDelete));
+    placesList.append(createCard(cardItem, handlerOnLike, handlerOnDelete, handlerCardClicked));
 });

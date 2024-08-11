@@ -1,6 +1,4 @@
-export { openPopup };
-
-const popups = document.querySelectorAll('.popup');
+export { openPopup, closePopup };
 
 function openPopup(popupType) {
     if (popupType) {
@@ -20,13 +18,13 @@ function closePopup(popupType) {
 
 function handlerOnClick(e) {
     if (isCloseClicked(e) || isOverlayClicked(e)) {
-        popups.forEach(popup => { closePopup(popup); });
+        closePopup(e.currentTarget);
     }
 }
 
 function handlerOnKeydown(e) {
     if (isEscapePressed(e)) {
-        popups.forEach(popup => { closePopup(popup); });
+        closePopup(document.querySelector('.popup_is-opened'));
     }
 }
 

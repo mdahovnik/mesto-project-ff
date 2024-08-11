@@ -1,7 +1,7 @@
-import { handlerCardClicked, cardTemplate } from ".";
+import { cardTemplate } from ".";
 export { createCard, handlerOnLike, handlerOnDelete };
 
-function createCard(cardItem, onLike, onDelete) {
+function createCard(cardItem, onLike, onDelete, onClick) {
     const card = cardTemplate.querySelector('.card').cloneNode(true);
     const cardImage = card.querySelector('.card__image');
     const likeButton = card.querySelector('.card__like-button');
@@ -10,7 +10,7 @@ function createCard(cardItem, onLike, onDelete) {
     cardImage.src = cardItem.link;
     cardImage.alt = cardItem.name;
     card.querySelector('.card__title').textContent = cardItem.name;
-    card.addEventListener('click', handlerCardClicked);
+    card.addEventListener('click', onClick);
     likeButton.addEventListener('click', onLike);
     deleteButton.addEventListener('click', onDelete);
     return card;
@@ -21,6 +21,5 @@ function handlerOnLike(e) {
 }
 
 function handlerOnDelete(e) {
-    e.target.removeEventListener('click', handlerCardClicked);
     e.target.parentElement.remove();
 }
