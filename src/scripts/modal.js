@@ -1,21 +1,33 @@
-export { open };
+export { showPopup };
 
-function open(popupType) {
+function showPopup(popupType) {
     if (popupType) {
-        popupType.addEventListener('click', close);
-        document.addEventListener('keydown', close);
+        popupType.addEventListener('click', hidePopup);
+        document.addEventListener('keydown', hidePopup);
         popupType.classList.add('popup_is-opened');
     }
 }
 
-function close(e) {
-    if (e.target.className === 'popup__close' || e.target.classList.contains('popup') || e.key === 'Escape') {
+function hidePopup(e) {
+    if (isCloseClicked(e) || isOverlayClicked(e) || isEscapePressed(e)) {
         document.querySelectorAll('.popup').forEach(popup => {
             if (popup.classList.contains('popup_is-opened')) {
                 popup.classList.remove('popup_is-opened');
-                popup.removeEventListener('click', close);
-                document.removeEventListener('keydown', close);
+                popup.removeEventListener('click', hidePopup);
+                document.removeEventListener('keydown', hidePopup);
             }
         });
     }
+}
+
+function isCloseClicked(e) {
+    return e.target.className === 'popup__close'
+}
+
+function isOverlayClicked(e) {
+    return e.target.classList.contains('popup');
+}
+
+function isEscapePressed(e) {
+    return e.key === 'Escape';
 }
