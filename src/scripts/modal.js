@@ -2,40 +2,40 @@ export { openPopup, closePopup };
 
 function openPopup(popupType) {
     if (popupType) {
-        popupType.addEventListener('click', handlerOnClick);
-        document.addEventListener('keydown', handlerOnKeydown);
+        popupType.addEventListener('click', handleOnClick);
+        document.addEventListener('keydown', handleOnKeydown);
         popupType.classList.add('popup_is-opened');
     }
 }
 
 function closePopup(popupType) {
-    if (popupType.classList.contains('popup_is-opened')) {
-        popupType.removeEventListener('click', handlerOnClick);
-        document.removeEventListener('keydown', handlerOnKeydown);
+    if (popupType && popupType.classList.contains('popup_is-opened')) {
+        popupType.removeEventListener('click', handleOnClick);
+        document.removeEventListener('keydown', handleOnKeydown);
         popupType.classList.remove('popup_is-opened');
     }
 }
 
-function handlerOnClick(e) {
-    if (isCloseClicked(e) || isOverlayClicked(e)) {
-        closePopup(e.currentTarget);
+function handleOnClick(event) {
+    if (isCloseClick(event) || isOverlayClick(event)) {
+        closePopup(event.currentTarget);
     }
 }
 
-function handlerOnKeydown(e) {
-    if (isEscapePressed(e)) {
+function handleOnKeydown(event) {
+    if (isEscapePressed(event)) {
         closePopup(document.querySelector('.popup_is-opened'));
     }
 }
 
-function isCloseClicked(e) {
-    return e.target.className === 'popup__close'
+function isCloseClick(event) {
+    return event.target.className === 'popup__close'
 }
 
-function isOverlayClicked(e) {
-    return e.target.classList.contains('popup');
+function isOverlayClick(event) {
+    return event.target.classList.contains('popup');
 }
 
-function isEscapePressed(e) {
-    return e.key === 'Escape';
+function isEscapePressed(event) {
+    return event.key === 'Escape';
 }

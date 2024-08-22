@@ -1,25 +1,28 @@
-import { cardTemplate } from ".";
-export { createCard, handlerOnLike, handlerOnDelete };
+export { createCard, handleCardLike, handleCardDelete };
 
-function createCard(cardItem, onLike, onDelete, onClick) {
+const cardTemplate = document.querySelector('#card-template').content;
+
+function createCard(cardObject, onLike, onDelete, onClick) {
     const card = cardTemplate.querySelector('.card').cloneNode(true);
     const cardImage = card.querySelector('.card__image');
-    const likeButton = card.querySelector('.card__like-button');
-    const deleteButton = card.querySelector('.card__delete-button');
+    const cardLikeButton = card.querySelector('.card__like-button');
+    const cardDeleteButton = card.querySelector('.card__delete-button');
+    const cardTitle = card.querySelector('.card__title');
 
-    cardImage.src = cardItem.link;
-    cardImage.alt = cardItem.name;
-    card.querySelector('.card__title').textContent = cardItem.name;
+    cardImage.src = cardObject.link;
+    cardImage.alt = cardObject.name;
+    cardTitle.textContent = cardObject.name;
     card.addEventListener('click', onClick);
-    likeButton.addEventListener('click', onLike);
-    deleteButton.addEventListener('click', onDelete);
+    cardLikeButton.addEventListener('click', onLike);
+    cardDeleteButton.addEventListener('click', onDelete);
+
     return card;
 }
 
-function handlerOnLike(e) {
-    e.target.classList.toggle('card__like-button_is-active');
+function handleCardLike(event) {
+    event.target.classList.toggle('card__like-button_is-active');
 }
 
-function handlerOnDelete(e) {
-    e.target.parentElement.remove();
+function handleCardDelete(event) {
+    event.target.parentElement.remove();
 }
