@@ -1,8 +1,9 @@
 import '../pages/index.css';
-import { initialCards } from './cards';
+// import { initialCards } from './cards';
 import { createCard, handleCardLike, handleCardDelete } from './card';
 import { openPopup, closePopup } from './modal';
 import { enableValidation, clearValidation } from './validation';
+import { getProfile, getCards, saveProfile, saveCard, deleteCard } from './api';
 
 const content = document.querySelector('.content');
 const placesList = document.querySelector('.places__list');
@@ -13,8 +14,10 @@ const imagePopup = document.querySelector('.popup_type_image');
 const editProfileForm = document.forms['edit-profile'];
 const profileNameInput = editProfileForm.querySelector('.popup__input_type_name');
 const descriptionInput = editProfileForm.querySelector('.popup__input_type_description');
-
+const profileInfo = document.querySelector('.profile__info');
+const profileImage = document.querySelector('.profile__image');
 const newImageForm = document.forms['new-place'];
+
 // const newCardNameInput = newImageForm.querySelector('.popup__input_type_card-name');
 // const newCardUrlInput = newImageForm.querySelector('.popup__input_type_url');
 
@@ -26,6 +29,40 @@ const validationConfig = {
     inputErrorClass: 'popup__input_type_error',
     errorClass: 'popup__error_visible'
 };
+
+//  style="background-image: url(<%=require('./images/avatar.jpg')%>);"
+getProfile()
+    .then((res) => {
+        if (res.ok)
+            return res.json();
+
+        return Promise.reject(error);
+    })
+    .then((data) => {
+        // profileImage.style.backgroundImage = data.avatar;
+        profileImage.setAttribute('style', `background-image: url(${data.avatar})`);
+        profileInfo.querySelector('.profile__title').textContent = data.name;
+        profileInfo.querySelector('.profile__description').textContent = data.about;
+    })
+    .catch((error) => {
+        console.log('getProfile error: ' + error);
+    });
+
+getCards()
+    .then((res) => {
+        if (res.ok)
+            return res.json();
+
+        return Promise.reject(error);
+    })
+    .then((data) => {
+        data.forEach(cardItem => {
+            placesList.append(createCard(getNewCardObject(cardItem)));
+        });
+    })
+    .catch((error) => {
+        console.log('getCards error: ' + error);
+    });
 
 document.addEventListener('click', handlePageButtons);
 enableValidation(validationConfig);
@@ -57,11 +94,18 @@ function handlePageButtons(event) {
     }
 }
 
-
 function handleProfileSubmit(event) {
     event.preventDefault();
     content.querySelector('.profile__title').textContent = profileNameInput.value;
     content.querySelector('.profile__description').textContent = descriptionInput.value;
+
+    saveProfile(profileNameInput, descriptionInput)
+        .then((res) => {
+            return res.json();
+        })
+        .then((data) => {
+        });
+
     editProfileForm.removeEventListener('submit', handleProfileSubmit);
 
     clearValidation(editProfileForm, validationConfig);
@@ -74,9 +118,22 @@ function handleNewCardSubmit(event) {
     const newCardName = getValidCardName(cardName);
     const newCardUrl = newCardPopup.querySelector('.popup__input_type_url').value;
     const cardItem = { name: newCardName, link: newCardUrl };
-    const newCard = createCard(getNewCardObject(cardItem));
+    // const newCard = createCard(getNewCardObject(cardItem));
 
-    placesList.prepend(newCard);
+    saveCard(newCardName, newCardUrl)
+        .then((res) => {
+            if (res.ok)
+                return res.json()
+
+            return Promise.reject(error);
+        })
+        .then((data) => {
+            placesList.prepend(createCard(getNewCardObject(data)));
+        })
+        .catch((error) => {
+            console.log('save newCard error: ' + error);
+        });
+
     newImageForm.reset();
     newImageForm.removeEventListener('submit', handleNewCardSubmit);
 
@@ -95,7 +152,7 @@ function getNewCardObject(cardItem) {
     return { cardItem, handleCardLike, handleCardDelete, handleCardImageClick };
 }
 
-initialCards.forEach(cardItem => {
-    placesList.append(createCard(getNewCardObject(cardItem)));
-});
+// initialCards.forEach(cardItem => {
+//     placesList.append(createCard(getNewCardObject(cardItem)));
+// });
 

@@ -17,35 +17,6 @@ export function clearValidation(form, config) {
     })
 }
 
-function checkInputValidation(form, input) {
-    if (input.validity.patternMismatch) {
-        input.setCustomValidity(input.dataset.errorMessage);
-    } else {
-        input.setCustomValidity("");
-    }
-
-    if (!input.validity.valid) {
-        showError(form, input, input.validationMessage);
-    }
-    else {
-        hideError(form, input);
-    }
-}
-
-function showError(form, input, errorMessage, config) {
-    const inputError = form.querySelector(`.${input.id}-error`);
-    input.classList.add('popup__input_type_error');
-    inputError.textContent = errorMessage;
-    inputError.classList.add('popup__error_visible');
-}
-
-function hideError(form, input, config) {
-    const inputError = form.querySelector(`.${input.id}-error`);
-    input.classList.remove('popup__input_type_error');
-    inputError.classList.remove('popup__error_visible');
-    inputError.textContent = '';
-}
-
 function setInputEventListeners(form, config) {
     const inputList = Array.from(form.querySelectorAll(config.inputSelector));
     const submitButton = form.querySelector(config.submitButtonSelector);
@@ -54,10 +25,39 @@ function setInputEventListeners(form, config) {
 
     inputList.forEach((input) => {
         input.addEventListener('input', () => {
-            checkInputValidation(form, input);
+            checkInputValidation(form, input, config);
             toggleButtonState(inputList, submitButton);
         })
     })
+}
+
+function checkInputValidation(form, input, config) {
+    if (input.validity.patternMismatch) {
+        input.setCustomValidity(input.dataset.errorMessage);
+    } else {
+        input.setCustomValidity("");
+    }
+
+    if (!input.validity.valid) {
+        showError(form, input, input.validationMessage, config);
+    }
+    else {
+        hideError(form, input, config);
+    }
+}
+
+function showError(form, input, errorMessage, config) {
+    const inputError = form.querySelector(`.${input.id}-error`);
+    input.classList.add(config.inputErrorClass);
+    inputError.textContent = errorMessage;
+    inputError.classList.add(config.errorClass);
+}
+
+function hideError(form, input, config) {
+    const inputError = form.querySelector(`.${input.id}-error`);
+    input.classList.remove(config.inputErrorClass);
+    inputError.classList.remove(config.errorClass);
+    inputError.textContent = '';
 }
 
 function toggleButtonState(inputList, button) {
