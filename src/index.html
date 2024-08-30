@@ -16,8 +16,11 @@
     </header>
     <main class="content">
       <section class="profile page__section">
-        <div class="profile__image"></div>
-        <div class="profile__info">
+        <div class="profile__image">
+          <span class="avatar__mask"></span>
+          <button type="button" class="profile__avatar-button"></button>
+        </div>
+        <div class="profile__info" id="">
           <h1 class="profile__title">Жак-Ив Кусто</h1>
           <button class="profile__edit-button" type="button" aria-label="Редактировать профиль"></button>
           <p class="profile__description">Исследователь океана</p>
@@ -34,6 +37,25 @@
         © 2021 Mesto Russia
       </p>
     </footer>
+
+    <div class="popup popup_type_avatar popup_is-animated">
+      <div class="popup__content">
+        <button type="button" class="popup__close" aria-label="Обновить аватар"></button>
+        <h3 class="popup__title">Обновить аватар</h3>
+
+        <form class="popup__form" name="avatar">
+          <div class="popup__wrapper">
+            <input type="url" name="link" class="popup__input popup__input_type_url" id="avatar-url-input"
+              placeholder="Ссылка на картинку" required>
+            <span class="popup__error avatar-url-input-error"></span>
+          </div>
+
+          <button type="submit" class="button popup__button">Сохранить</button>
+        </form>
+
+      </div>
+    </div>
+
     <div class="popup popup_type_edit popup_is-animated">
       <div class="popup__content">
         <button type="button" class="popup__close" aria-label="Закрыть окно редактирования профиля"></button>
@@ -60,6 +82,7 @@
 
       </div>
     </div>
+
     <div class="popup popup_type_new-card popup_is-animated">
       <div class="popup__content">
         <button type="button" class="popup__close" aria-label="Закрыть окно добавления карточки"></button>
@@ -106,12 +129,7 @@
 
   <template id="card-template">
     <li class="places__item card" id="">
-      <img class="card__image" src="" alt="" />
-      <button type="button" class="card__delete-button" aria-label="Удалить карточку"></button>
-      <div class="card__description">
-        <h2 class="card__title"></h2>
-        <div class="card__like-wrapper">
-          <button type="button" class="card__like-button" aria-label="Поставить лайк"></button>
+      <img class="chttps://i.pinimg.com/736x/d8/d5/83/d8d583b2ef24eef304b4a7fb3bf00362.jpg"button" class="card__like-button" aria-label="Поставить лайк"></button>
           <span class="card__like-count"></span>
         </div>
       </div>

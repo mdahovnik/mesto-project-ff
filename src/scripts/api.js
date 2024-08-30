@@ -19,6 +19,14 @@ export const getProfile = function () {
     });
 }
 
+export const getCards = function () {
+    return fetch('https://nomoreparties.co/v1/wff-cohort-22/cards', {
+        headers: {
+            authorization: '414f8694-193c-4196-bcbb-74dcac9ca435'
+        }
+    });
+}
+
 export const saveProfile = function (userName, userDescription) {
     return fetch('https://nomoreparties.co/v1/wff-cohort-22/users/me ', {
         method: 'PATCH',
@@ -33,11 +41,16 @@ export const saveProfile = function (userName, userDescription) {
     });
 }
 
-export const getCards = function () {
-    return fetch('https://nomoreparties.co/v1/wff-cohort-22/cards', {
+export const saveAvatar = function (avatarLink) {
+    return fetch('https://nomoreparties.co/v1/wff-cohort-22/users/me/avatar', {
+        method: 'PATCH',
         headers: {
-            authorization: '414f8694-193c-4196-bcbb-74dcac9ca435'
-        }
+            authorization: '414f8694-193c-4196-bcbb-74dcac9ca435',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            avatar: avatarLink
+        })
     });
 }
 
@@ -71,11 +84,7 @@ export const setLike = function (cardId) {
         headers: {
             authorization: '414f8694-193c-4196-bcbb-74dcac9ca435',
             'Content-Type': 'application/json'
-        },
-        // body: JSON.stringify({
-        //     name: userName.value,
-        //     about: userDescription.value
-        // })
+        }
     })
 }
 

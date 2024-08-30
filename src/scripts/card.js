@@ -1,11 +1,12 @@
-import { deleteCard, setLike, desLike } from "./api";
+import { deleteCard, setLike, desLike, getProfile } from "./api";
 import { closePopup, openPopup } from "./modal";
 export { createCard, handleCardLike, handleCardDelete };
 
 const cardTemplate = document.querySelector('#card-template').content;
 const deleteCardPopup = document.querySelector('.popup_type_delete-card');
+const profile = document.querySelector('.profile__info');
 
-function createCard(cardObject) {
+function createCard(cardData) {
     const card = cardTemplate.querySelector('.card').cloneNode(true);
     const cardImage = card.querySelector('.card__image');
     const cardLikeButton = card.querySelector('.card__like-button');
@@ -13,20 +14,24 @@ function createCard(cardObject) {
     const cardTitle = card.querySelector('.card__title');
     const cardLikeCount = card.querySelector('.card__like-count');
 
-    if (cardObject.cardItem.likes.find(item => item._id === cardObject.cardItem.owner._id)) {
+    card.id = cardData.cardItem._id;
+    cardImage.src = cardData.cardItem.link;
+    cardImage.alt = cardData.cardItem.name;
+    cardTitle.textContent = cardData.cardItem.name;
+    cardLikeCount.textContent = cardData.cardItem.likes.length;
+    cardImage.addEventListener('click', () => {
+        cardData.handleCardImageClick(cardImage.src, cardImage.alt)
+    });
+    cardLikeButton.addEventListener('click', cardData.handleCardLike);
+    cardDeleteButton.addEventListener('click', cardData.handleCardDelete);
+
+    if (cardData.cardItem.likes.find(item => item._id === cardData.cardItem.owner._id)) {
         cardLikeButton.classList.add('card__like-button_is-active');
     }
 
-    card.id = cardObject.cardItem._id;
-    cardImage.src = cardObject.cardItem.link;
-    cardImage.alt = cardObject.cardItem.name;
-    cardTitle.textContent = cardObject.cardItem.name;
-    cardLikeCount.textContent = cardObject.cardItem.likes.length;
-    cardImage.addEventListener('click', () => {
-        cardObject.handleCardImageClick(cardImage.src, cardImage.alt)
-    });
-    cardLikeButton.addEventListener('click', cardObject.handleCardLike);
-    cardDeleteButton.addEventListener('click', cardObject.handleCardDelete);
+    if (cardData.cardItem.owner._id !== profile.id) {
+        cardDeleteButton.style.display = "none";
+    }
 
     return card;
 }
