@@ -399,6 +399,10 @@ template {
   background: #000;
 }
 
+.page-no-scroll {
+  overflow: hidden;
+}
+
 .header__logo {
   width: 142px;
   height: 33px;
