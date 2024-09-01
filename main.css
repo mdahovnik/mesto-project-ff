@@ -11,7 +11,7 @@
 html {
   line-height: 1.15; /* 1 */
   -webkit-text-size-adjust: 100%; /* 2 */
-  scrollbar-gutter: stable both-edges;
+  /* scrollbar-gutter: stable both-edges; */
 }
 
 /* Sections
@@ -400,6 +400,10 @@ template {
   background: #000;
 }
 
+.page::-webkit-scrollbar{
+  display: none;
+}
+
 .page-no-scroll {
   overflow: hidden;
 }
@@ -593,7 +597,11 @@ template {
     z-index: 1;
 }
 
-.avatar__mask{
+.profile__avatar-button:focus-visible{
+    opacity: 1;
+}
+
+.avatar__mask {
     position: absolute;
     background: #000;
     inset: 0;
@@ -603,6 +611,10 @@ template {
     -ms-transition: 0.3s;
     -o-transition: 0.3s;
     transition: 0.3s;
+}
+
+.profile__avatar-button:focus-visible + .avatar__mask{
+    opacity: 0.7;
 }
 .profile__info {
   display: grid;
