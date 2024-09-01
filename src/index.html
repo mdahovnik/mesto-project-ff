@@ -15,19 +15,21 @@
       <img src="<%=require('./images/logo.svg')%>" alt="Логотип проекта место" class="logo header__logo">
     </header>
     <main class="content">
+      
       <section class="profile page__section">
         <div class="profile__image">
+          <button type="button" class="profile__avatar-button" aria-label="Редактировать аватар"></button>
           <span class="avatar__mask"></span>
-          <button type="button" class="profile__avatar-button"></button>
         </div>
         <div class="profile__info" id="">
-          <h1 class="profile__title">Жак-Ив Кусто</h1>
+          <h1 class="profile__title">&nbsp;</h1>
           <button class="profile__edit-button" type="button" aria-label="Редактировать профиль"></button>
-          <p class="profile__description">Исследователь океана</p>
+          <p class="profile__description">&nbsp;</p>
         </div>
         <button class="profile__add-button" type="button" aria-label="Добавить новое место"></button>
       </section>
       <section class="places page__section">
+        <div class="places__spinner"><i></i></div>
         <ul class="places__list">
         </ul>
       </section>
@@ -129,7 +131,12 @@
 
   <template id="card-template">
     <li class="places__item card" id="">
-      <img class="chttps://i.pinimg.com/736x/d8/d5/83/d8d583b2ef24eef304b4a7fb3bf00362.jpg"button" class="card__like-button" aria-label="Поставить лайк"></button>
+      <img class="card__image" src="" alt="" />
+      <button type="button" class="card__delete-button" aria-label="Удалить карточку"></button>
+      <div class="card__description">
+        <h2 class="card__title"></h2>
+        <div class="card__like-wrapper">
+          <button type="button" class="card__like-button" aria-label="Поставить лайк"></button>
           <span class="card__like-count"></span>
         </div>
       </div>

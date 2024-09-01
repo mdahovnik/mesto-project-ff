@@ -11,7 +11,7 @@ export function clearValidation(form, config) {
     inputList.forEach((input) => {
         input.classList.remove(config.inputErrorClass);
         const inputError = form.querySelector(`.${input.id}-error`);
-        
+
         inputError.classList.remove(config.errorClass);
         inputError.textContent = '';
     })
@@ -21,12 +21,12 @@ function setInputEventListeners(form, config) {
     const inputList = Array.from(form.querySelectorAll(config.inputSelector));
     const submitButton = form.querySelector(config.submitButtonSelector);
 
-    toggleButtonState(inputList, submitButton);
+    toggleButtonState(inputList, submitButton, config);
 
     inputList.forEach((input) => {
         input.addEventListener('input', () => {
             checkInputValidation(form, input, config);
-            toggleButtonState(inputList, submitButton);
+            toggleButtonState(inputList, submitButton, config);
         })
     })
 }
@@ -60,11 +60,11 @@ function hideError(form, input, config) {
     inputError.textContent = '';
 }
 
-function toggleButtonState(inputList, button) {
+function toggleButtonState(inputList, button, config) {
     if (hasInvalidInput(inputList)) {
-        button.classList.add('popup__button_disabled');
+        button.classList.add(config.inactiveButtonClass);
     } else {
-        button.classList.remove('popup__button_disabled');
+        button.classList.remove(config.inactiveButtonClass);
     }
 }
 

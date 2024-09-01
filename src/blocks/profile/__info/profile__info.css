@@ -28,6 +28,6 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    margin: 26px 0 33px 0;
+    margin: 26px 0 33px;
   }
 }

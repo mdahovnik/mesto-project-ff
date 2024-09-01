@@ -2,15 +2,12 @@
     width: 28px;
     height: 28px;
     background: transparent url('../../../images/edit-icon.svg') center no-repeat;
-    /*Потом это будет из модификатора*/
     background-size: 26px 26px;
     border: none;
     cursor: pointer;
     position: absolute;
     top: calc(50% - 14px);
     left: calc(50% - 14px);
-    padding: 0;
-    margin: 0;
     -webkit-transition: 0.3s;
     -moz-transition: 0.3s;
     -ms-transition: 0.3s;
@@ -22,7 +19,7 @@
 
 .avatar__mask{
     position: absolute;
-    background: rgba(0,0,0);
+    background: #000;
     inset: 0;
     opacity: 0;
     -webkit-transition: 0.3s;
