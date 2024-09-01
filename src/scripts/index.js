@@ -126,11 +126,13 @@ function handleProfileSubmit(event) {
 
 function handleNewCardSubmit(event) {
     event.preventDefault();
+
     const cardName = newCardPopup.querySelector('.popup__input_type_card-name').value;
     const newCardName = getValidCardName(cardName);
     const newCardUrl = newCardPopup.querySelector('.popup__input_type_url').value;
 
     setButtonName(newCardPopup, 'Сохранение...');
+
     saveCard(newCardName, newCardUrl)
         .then((data) => {
             placesList.prepend(createCard(getNewCardObject(data)));
@@ -152,9 +154,11 @@ function handleNewCardSubmit(event) {
 
 function handleAvatarSubmit(event) {
     event.preventDefault();
+
     const avatarLink = avatarPopup.querySelector('.popup__input_type_url').value;
 
     setButtonName(avatarPopup, 'Сохранение...');
+
     saveAvatar(avatarLink)
         .then((data) => {
             userAvatar.setAttribute('style', `background-image: url(${data.avatar})`);
@@ -181,6 +185,7 @@ function getValidCardName(inputString) {
 function getNewCardObject(cardItem) {
     const userId = user.id;
     const handlers = { handleLike, handleDelete, handleCardClick };
+    
     return { cardItem, handlers, userId };
 }
 
