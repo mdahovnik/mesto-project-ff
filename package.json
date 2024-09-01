@@ -17,7 +17,7 @@
   "bugs": {
     "url": "https://github.com/mdahovnik/mesto-project-ff/issues"
   },
-  "homepage": "https://github.com/mdahovnik/mesto-project-ff",
+  "homepage": "https://github.com/mdahovnik/mesto-project-ff#readme",
   "devDependencies": {
     "@babel/core": "^7.25.2",
     "@babel/preset-env": "^7.25.3",

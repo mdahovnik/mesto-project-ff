@@ -1,14 +1,15 @@
 export { openPopup, closePopup };
 
 function openPopup(popupType) {
-    if (popupType) {
-        popupType.addEventListener('click', handleOnClick);
-        document.addEventListener('keydown', handleOnKeydown);
-        popupType.classList.add('popup_is-opened');
-    }
+    document.querySelector('.page').classList.add('page-no-scroll');
+
+    popupType.addEventListener('click', handleOnClick);
+    document.addEventListener('keydown', handleOnKeydown);
+    popupType.classList.add('popup_is-opened');
 }
 
 function closePopup(popupType) {
+    document.querySelector('.page').classList.remove('page-no-scroll');
     if (popupType && popupType.classList.contains('popup_is-opened')) {
         popupType.removeEventListener('click', handleOnClick);
         document.removeEventListener('keydown', handleOnKeydown);
