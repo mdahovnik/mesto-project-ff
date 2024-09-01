@@ -5,6 +5,10 @@
   background: #000;
 }
 
+.page::-webkit-scrollbar{
+  display: none;
+}
+
 .page-no-scroll {
   overflow: hidden;
 }
