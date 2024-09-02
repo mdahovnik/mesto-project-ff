@@ -1,12 +1,15 @@
+import { cardTemplate, deleteCardPopup } from './constants';
 import { deleteCard, like, dislike } from "./api";
 import { closePopup, openPopup } from "./modal";
-export { createCard, handleLike, handleDelete };
 
-const cardTemplate = document.querySelector('#card-template').content;
-const deleteCardPopup = document.querySelector('.popup_type_delete-card');
+export { createCard, handleLikeButton, handleDeleteButton };
+
+deleteCardPopup.addEventListener('submit', handleCardDeleteSubmit);
+
+let cardToDelete = null;
 
 function createCard(cardObject) {
-    const card = cardTemplate.querySelector('.card').cloneNode(true);
+    const card = cardTemplate.content.querySelector('.card').cloneNode(true);
     const image = card.querySelector('.card__image');
     const likeButton = card.querySelector('.card__like-button');
     const deleteButton = card.querySelector('.card__delete-button');
@@ -19,8 +22,8 @@ function createCard(cardObject) {
     title.textContent = cardObject.cardItem.name;
     likeCount.textContent = cardObject.cardItem.likes.length;
 
-    likeButton.addEventListener('click', cardObject.handlers.handleLike);
-    deleteButton.addEventListener('click', cardObject.handlers.handleDelete);
+    likeButton.addEventListener('click', cardObject.handlers.handleLikeButton);
+    deleteButton.addEventListener('click', cardObject.handlers.handleDeleteButton);
     image.addEventListener('click', () => {
         cardObject.handlers.handleCardClick(image.src, image.alt)
     });
@@ -38,7 +41,7 @@ function createCard(cardObject) {
     return card;
 }
 
-function handleLike(event) {
+function handleLikeButton(event) {
     const card = event.target.closest('.card');
     const likeCount = card.querySelector('.card__like-count');
 
@@ -64,21 +67,20 @@ function handleLike(event) {
     }
 }
 
-function handleDelete(event) {
-    const card = event.target.closest('.card');
-
-    deleteCardPopup.addEventListener('submit', (event) => {
-        event.preventDefault();
-
-        deleteCard(card.id)
-            .then(() => {
-                card.remove();
-                closePopup(deleteCardPopup);
-            })
-            .catch((err) => {
-                console.error(err);
-            })
-    });
-
+function handleDeleteButton(event) {
+    cardToDelete = event.target.closest('.card');
     openPopup(deleteCardPopup);
+}
+
+function handleCardDeleteSubmit(event) {
+    event.preventDefault();
+
+    deleteCard(cardToDelete.id)
+        .then(() => {
+            cardToDelete.remove();
+            closePopup(deleteCardPopup);
+        })
+        .catch((err) => {
+            console.error(err);
+        })
 }

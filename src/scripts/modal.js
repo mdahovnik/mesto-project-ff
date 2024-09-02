@@ -1,17 +1,19 @@
+import { page } from './constants';
+
 export { openPopup, closePopup };
 
 function openPopup(popupType) {
-    popupType.addEventListener('click', handleOnClick);
     document.addEventListener('keydown', handleOnKeydown);
+    popupType.addEventListener('click', handleOnClick);
     popupType.classList.add('popup_is-opened');
-    document.querySelector('.page').classList.add('page-no-scroll');
+    page.classList.add('page-no-scroll');
 }
 
 function closePopup(popupType) {
-    popupType.removeEventListener('click', handleOnClick);
     document.removeEventListener('keydown', handleOnKeydown);
+    popupType.removeEventListener('click', handleOnClick);
     popupType.classList.remove('popup_is-opened');
-    document.querySelector('.page').classList.remove('page-no-scroll');
+    page.classList.remove('page-no-scroll');
 }
 
 function handleOnClick(event) {

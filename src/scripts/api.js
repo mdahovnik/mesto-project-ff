@@ -9,13 +9,13 @@ const apiConfig = {
 export function getProfile() {
     return fetch(`${apiConfig.baseUrl}/users/me`, {
         headers: apiConfig.headers
-    }).then(res => checkResponseStatus(res))
+    }).then(checkResponseStatus)
 }
 
 export function getCards() {
     return fetch(`${apiConfig.baseUrl}/cards`, {
         headers: apiConfig.headers
-    }).then(res => checkResponseStatus(res))
+    }).then(checkResponseStatus)
 }
 
 export function saveProfile(userName, userDescription) {
@@ -26,7 +26,7 @@ export function saveProfile(userName, userDescription) {
             name: userName.value,
             about: userDescription.value
         })
-    }).then(res => checkResponseStatus(res))
+    }).then(checkResponseStatus)
 }
 
 export function saveAvatar(avatarLink) {
@@ -36,7 +36,7 @@ export function saveAvatar(avatarLink) {
         body: JSON.stringify({
             avatar: avatarLink
         })
-    }).then(res => checkResponseStatus(res))
+    }).then(checkResponseStatus)
 }
 
 export function saveCard(name, link) {
@@ -47,28 +47,28 @@ export function saveCard(name, link) {
             name: name,
             link: link
         })
-    }).then(res => checkResponseStatus(res))
+    }).then(checkResponseStatus)
 }
 
 export function deleteCard(cardId) {
     return fetch(`${apiConfig.baseUrl}/cards/${cardId}`, {
         method: 'DELETE',
         headers: apiConfig.headers
-    }).then(res => checkResponseStatus(res))
+    }).then(checkResponseStatus)
 }
 
 export function like(cardId) {
     return fetch(`${apiConfig.baseUrl}/cards/likes/${cardId}`, {
         method: 'PUT',
         headers: apiConfig.headers
-    }).then(res => checkResponseStatus(res))
+    }).then(checkResponseStatus)
 }
 
 export function dislike(cardId) {
     return fetch(`${apiConfig.baseUrl}/cards/likes/${cardId}`, {
         method: 'DELETE',
         headers: apiConfig.headers
-    }).then(res => checkResponseStatus(res))
+    }).then(checkResponseStatus)
 }
 
 function checkResponseStatus(response) {

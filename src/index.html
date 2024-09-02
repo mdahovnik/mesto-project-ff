@@ -16,12 +16,12 @@
     </header>
     <main class="content">
       
-      <section class="profile page__section">
+      <section class="profile page__section" id="">
         <div class="profile__image">
           <button type="button" class="profile__avatar-button" aria-label="Редактировать аватар"></button>
           <span class="avatar__mask"></span>
         </div>
-        <div class="profile__info" id="">
+        <div class="profile__info">
           <h1 class="profile__title">&nbsp;</h1>
           <button class="profile__edit-button" type="button" aria-label="Редактировать профиль"></button>
           <p class="profile__description">&nbsp;</p>
@@ -51,10 +51,8 @@
               placeholder="Ссылка на картинку" required>
             <span class="popup__error avatar-url-input-error"></span>
           </div>
-
           <button type="submit" class="button popup__button">Сохранить</button>
         </form>
-
       </div>
     </div>
 
@@ -70,7 +68,6 @@
               data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы">
             <span class="popup__error name-input-error"></span>
           </div>
-
           <div class="popup__wrapper">
             <input type="text" name="description" class="popup__input popup__input_type_description"
               id="description-input" placeholder="Занятие" required minlength="2" maxlength="200"
@@ -78,7 +75,6 @@
               data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы">
             <span class="popup__error description-input-error"></span>
           </div>
-
           <button type="submit" class="button popup__button">Сохранить</button>
         </form>
 
@@ -103,7 +99,6 @@
               placeholder="Ссылка на картинку" required>
             <span class="popup__error card-url-input-error"></span>
           </div>
-
           <button type="submit" class="button popup__button">Сохранить</button>
         </form>
 
@@ -130,7 +125,7 @@
   </div>
 
   <template id="card-template">
-    <li class="places__item card" id="">
+    <li class="places__item card" id="" data-card-id="">
       <img class="card__image" src="" alt="" />
       <button type="button" class="card__delete-button" aria-label="Удалить карточку"></button>
       <div class="card__description">
