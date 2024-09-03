@@ -36,7 +36,8 @@ avatarForm.addEventListener('submit', handleAvatarSubmit);
 
 addButton.addEventListener('click', handleAddButton);
 editButton.addEventListener('click', handleEditButton);
-avatarButton.addEventListener('click', handleAvatarButton);
+// avatarButton.addEventListener('click', handleAvatarButton);
+profileAvatar.addEventListener('click', handleAvatarButton);
 
 renderLoading(true);
 
@@ -49,7 +50,7 @@ Promise.all(promises)
         profileAvatar.setAttribute('style', `background-image: url(${data[0].avatar})`);
         profileTitle.textContent = data[0].name;
         profileDescription.textContent = data[0].about;
-
+        
         data[1].forEach(cardItem => {
             placesList.append(createCard(getNewCardObject(cardItem)));
         });
