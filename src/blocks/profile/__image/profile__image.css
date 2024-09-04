@@ -9,7 +9,6 @@
   background-size: cover;
   background-position: center;
   margin: 0 29px 0 0;
-  /* cursor: pointer; */
 }
 
 @media screen and (max-width: 740px) {
@@ -25,12 +24,3 @@
     margin-right: 0;
   }
 }
-
-/* 
-.profile__image:hover .profile__avatar-button {
-  opacity: 1;
-}
-
-.profile__image:hover .avatar__mask {
-  opacity: .7;
-} */

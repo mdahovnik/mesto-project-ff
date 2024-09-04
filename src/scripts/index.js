@@ -36,7 +36,6 @@ avatarForm.addEventListener('submit', handleAvatarSubmit);
 
 addButton.addEventListener('click', handleAddButton);
 editButton.addEventListener('click', handleEditButton);
-// avatarButton.addEventListener('click', handleAvatarButton);
 profileAvatar.addEventListener('click', handleAvatarButton);
 
 renderLoading(true);

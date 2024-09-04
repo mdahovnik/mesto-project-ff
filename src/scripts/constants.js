@@ -7,7 +7,6 @@ export const profileAvatar = profile.querySelector('.profile__image');
 
 export const addButton = profile.querySelector('.profile__add-button');
 export const editButton = profile.querySelector('.profile__edit-button');
-// export const avatarButton = profile.querySelector('.profile__avatar-button');
 
 export const placesList = document.querySelector('.places__list');
 export const spinner = document.querySelector('.places__spinner');
