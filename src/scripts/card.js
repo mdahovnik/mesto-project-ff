@@ -16,7 +16,7 @@ function createCard(cardObject) {
     const title = card.querySelector('.card__title');
     const likeCount = card.querySelector('.card__like-count');
 
-    card.id = cardObject.cardItem._id;
+    card.dataset.cardId = cardObject.cardItem._id;
     image.src = cardObject.cardItem.link;
     image.alt = cardObject.cardItem.name;
     title.textContent = cardObject.cardItem.name;
@@ -46,8 +46,9 @@ function handleLikeButton(event) {
     const likeCount = card.querySelector('.card__like-count');
 
     if (!event.target.classList.contains('card__like-button_is-active')) {
-        like(card.id)
+        like(card.dataset.cardId)
             .then((data) => {
+                console.log(data)
                 likeCount.textContent = data.likes.length;
                 event.target.classList.add('card__like-button_is-active');
             })
@@ -56,7 +57,7 @@ function handleLikeButton(event) {
             })
     }
     else {
-        dislike(card.id)
+        dislike(card.dataset.cardId)
             .then((data) => {
                 likeCount.textContent = data.likes.length;
                 event.target.classList.remove('card__like-button_is-active');

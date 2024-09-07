@@ -45,7 +45,7 @@ renderLoading(true);
 */
 Promise.all(promises)
     .then((data) => {
-        profile.id = data[0]._id;
+        profile.dataset.userId = data[0]._id;
         profileAvatar.setAttribute('style', `background-image: url(${data[0].avatar})`);
         profileTitle.textContent = data[0].name;
         profileDescription.textContent = data[0].about;
@@ -110,7 +110,6 @@ function handleProfileSubmit(event) {
     clearValidation(editProfileForm, validationConfig);
 }
 
-
 function handleNewCardSubmit(event) {
     event.preventDefault();
 
@@ -163,7 +162,7 @@ function getValidCardName(inputString) {
 }
 
 function getNewCardObject(cardItem) {
-    const userId = profile.id;
+    const userId = profile.dataset.userId;
     const handlers = { handleLikeButton, handleDeleteButton, handleCardClick };
 
     return { cardItem, handlers, userId };
