@@ -1,12 +1,18 @@
 import { cardTemplate, deleteCardPopup } from './constants';
-import { deleteCard, like, dislike } from "./api";
-import { closePopup, openPopup } from "./modal";
+import { like, dislike } from "./api";
+import { openPopup } from "./modal";
 
-export { createCard, handleLikeButton, handleDeleteButton };
+export { createCard, handleLikeButton, handleDeleteButton, cardToDelete };
 
-deleteCardPopup.addEventListener('submit', handleCardDeleteSubmit);
+const cardToDelete = {
+    get card() {
+        return this._cardObject;
+    },
+    set card(obj) {
+        this._cardObject = obj;
+    }
+};
 
-let cardToDelete = null;
 
 function createCard(cardObject) {
     const card = cardTemplate.content.querySelector('.card').cloneNode(true);
@@ -41,6 +47,7 @@ function createCard(cardObject) {
     return card;
 }
 
+
 function handleLikeButton(event) {
     const card = event.target.closest('.card');
     const likeCount = card.querySelector('.card__like-count');
@@ -48,7 +55,6 @@ function handleLikeButton(event) {
     if (!event.target.classList.contains('card__like-button_is-active')) {
         like(card.dataset.cardId)
             .then((data) => {
-                console.log(data)
                 likeCount.textContent = data.likes.length;
                 event.target.classList.add('card__like-button_is-active');
             })
@@ -68,20 +74,8 @@ function handleLikeButton(event) {
     }
 }
 
+
 function handleDeleteButton(event) {
-    cardToDelete = event.target.closest('.card');
+    cardToDelete.card = event.target.closest('.card');
     openPopup(deleteCardPopup);
-}
-
-function handleCardDeleteSubmit(event) {
-    event.preventDefault();
-
-    deleteCard(cardToDelete.id)
-        .then(() => {
-            cardToDelete.remove();
-            closePopup(deleteCardPopup);
-        })
-        .catch((err) => {
-            console.error(err);
-        })
 }

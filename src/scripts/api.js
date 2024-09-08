@@ -6,17 +6,22 @@ const apiConfig = {
     }
 }
 
-export function getProfile() {
-    return fetch(`${apiConfig.baseUrl}/users/me`, {
+
+export async function getProfile() {
+    const response = await fetch(`${apiConfig.baseUrl}/users/me`, {
         headers: apiConfig.headers
-    }).then(checkResponseStatus)
+    })
+    return checkResponseStatus(response)
 }
 
-export function getCards() {
-    return fetch(`${apiConfig.baseUrl}/cards`, {
+
+export async function getCards() {
+    const response = await fetch(`${apiConfig.baseUrl}/cards`, {
         headers: apiConfig.headers
-    }).then(checkResponseStatus)
+    })
+    return checkResponseStatus(response);
 }
+
 
 export function saveProfile(userName, userDescription) {
     return fetch(`${apiConfig.baseUrl}/users/me`, {
@@ -29,6 +34,7 @@ export function saveProfile(userName, userDescription) {
     }).then(checkResponseStatus)
 }
 
+
 export function saveAvatar(avatarLink) {
     return fetch(`${apiConfig.baseUrl}/users/me/avatar`, {
         method: 'PATCH',
@@ -38,6 +44,7 @@ export function saveAvatar(avatarLink) {
         })
     }).then(checkResponseStatus)
 }
+
 
 export function saveCard(name, link) {
     return fetch(`${apiConfig.baseUrl}/cards`, {
@@ -50,12 +57,14 @@ export function saveCard(name, link) {
     }).then(checkResponseStatus)
 }
 
+
 export function deleteCard(cardId) {
     return fetch(`${apiConfig.baseUrl}/cards/${cardId}`, {
         method: 'DELETE',
         headers: apiConfig.headers
     }).then(checkResponseStatus)
 }
+
 
 export function like(cardId) {
     return fetch(`${apiConfig.baseUrl}/cards/likes/${cardId}`, {
@@ -64,12 +73,14 @@ export function like(cardId) {
     }).then(checkResponseStatus)
 }
 
+
 export function dislike(cardId) {
     return fetch(`${apiConfig.baseUrl}/cards/likes/${cardId}`, {
         method: 'DELETE',
         headers: apiConfig.headers
     }).then(checkResponseStatus)
 }
+
 
 function checkResponseStatus(response) {
     if (response.ok)

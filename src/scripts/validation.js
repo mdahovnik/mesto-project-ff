@@ -5,6 +5,7 @@ export function enableValidation(config) {
     })
 }
 
+
 export function clearValidation(form, config) {
     const inputList = Array.from(form.querySelectorAll(config.inputSelector));
 
@@ -16,6 +17,7 @@ export function clearValidation(form, config) {
         inputError.textContent = '';
     })
 }
+
 
 function setInputEventListeners(form, config) {
     const inputList = Array.from(form.querySelectorAll(config.inputSelector));
@@ -30,6 +32,7 @@ function setInputEventListeners(form, config) {
         })
     })
 }
+
 
 function checkInputValidation(form, input, config) {
     if (input.validity.patternMismatch) {
@@ -46,12 +49,14 @@ function checkInputValidation(form, input, config) {
     }
 }
 
+
 function showError(form, input, errorMessage, config) {
     const inputError = form.querySelector(`.${input.id}-error`);
     input.classList.add(config.inputErrorClass);
     inputError.textContent = errorMessage;
     inputError.classList.add(config.errorClass);
 }
+
 
 function hideError(form, input, config) {
     const inputError = form.querySelector(`.${input.id}-error`);
@@ -60,6 +65,7 @@ function hideError(form, input, config) {
     inputError.textContent = '';
 }
 
+
 function toggleButtonState(inputList, button, config) {
     if (hasInvalidInput(inputList)) {
         button.classList.add(config.inactiveButtonClass);
@@ -67,6 +73,7 @@ function toggleButtonState(inputList, button, config) {
         button.classList.remove(config.inactiveButtonClass);
     }
 }
+
 
 function hasInvalidInput(inputList) {
     return inputList.some((input) => {

@@ -2,12 +2,14 @@ import { page } from './constants';
 
 export { openPopup, closePopup };
 
+
 function openPopup(popupType) {
     document.addEventListener('keydown', handleOnKeydown);
     popupType.addEventListener('click', handleOnClick);
     popupType.classList.add('popup_is-opened');
     page.classList.add('page-no-scroll');
 }
+
 
 function closePopup(popupType) {
     document.removeEventListener('keydown', handleOnKeydown);
@@ -16,11 +18,13 @@ function closePopup(popupType) {
     page.classList.remove('page-no-scroll');
 }
 
+
 function handleOnClick(event) {
     if (isCloseClick(event) || isOverlayClick(event)) {
         closePopup(event.currentTarget);
     }
 }
+
 
 function handleOnKeydown(event) {
     if (isEscapePressed(event)) {
@@ -28,13 +32,16 @@ function handleOnKeydown(event) {
     }
 }
 
+
 function isCloseClick(event) {
     return event.target.className === 'popup__close'
 }
 
+
 function isOverlayClick(event) {
     return event.target.classList.contains('popup');
 }
+
 
 function isEscapePressed(event) {
     return event.key === 'Escape';
