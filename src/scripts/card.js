@@ -29,7 +29,6 @@ function createCard(cardObject) {
     likeCount.textContent = cardObject.cardItem.likes.length;
 
     likeButton.addEventListener('click', cardObject.handlers.handleLikeButton);
-    deleteButton.addEventListener('click', cardObject.handlers.handleDeleteButton);
     image.addEventListener('click', () => {
         cardObject.handlers.handleCardClick(image.src, image.alt)
     });
@@ -39,10 +38,11 @@ function createCard(cardObject) {
         likeButton.classList.add('card__like-button_is-active');
     }
 
-    // Проверяем владельца карточки, если не наша, деактивируем кнопку удаления.
-    if (cardObject.cardItem.owner._id !== cardObject.userId) {
-        deleteButton.style.display = "none";
+    // Проверяем владельца карточки, если наша, вешаем обработчик на кнопку, иначе скрываем кнопку.
+    if (cardObject.cardItem.owner._id === cardObject.userId) {
+        deleteButton.addEventListener('click', cardObject.handlers.handleDeleteButton);
     }
+    else deleteButton.style.display = "none";
 
     return card;
 }

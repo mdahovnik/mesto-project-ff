@@ -46,13 +46,13 @@ renderLoading(true);
     Promise.all() для гарантированного получения user_id до начала загрузки карточек
 */
 Promise.all(promises)
-    .then((data) => {
-        profile.dataset.userId = data[0]._id;
-        profileAvatar.setAttribute('style', `background-image: url(${data[0].avatar})`);
-        profileTitle.textContent = data[0].name;
-        profileDescription.textContent = data[0].about;
+    .then(([profileData, cardsData]) => {
+        profile.dataset.userId = profileData._id;
+        profileAvatar.setAttribute('style', `background-image: url(${profileData.avatar})`);
+        profileTitle.textContent = profileData.name;
+        profileDescription.textContent = profileData.about;
 
-        data[1].forEach(cardItem => {
+        cardsData.forEach(cardItem => {
             placesList.append(createCard(getNewCardObject(cardItem)));
         });
     })

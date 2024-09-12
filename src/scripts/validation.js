@@ -8,6 +8,9 @@ export function enableValidation(config) {
 
 export function clearValidation(form, config) {
     const inputList = Array.from(form.querySelectorAll(config.inputSelector));
+    const submitButton = form.querySelector(config.submitButtonSelector);
+    
+    toggleButtonState(inputList, submitButton, config);
 
     inputList.forEach((input) => {
         input.classList.remove(config.inputErrorClass);
@@ -68,8 +71,10 @@ function hideError(form, input, config) {
 
 function toggleButtonState(inputList, button, config) {
     if (hasInvalidInput(inputList)) {
+        button.disabled = true;
         button.classList.add(config.inactiveButtonClass);
     } else {
+        button.disabled = false;
         button.classList.remove(config.inactiveButtonClass);
     }
 }
