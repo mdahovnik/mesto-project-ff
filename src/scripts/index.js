@@ -41,6 +41,7 @@ profileAvatar.addEventListener('click', handleAvatarButton);
 deleteCardPopup.addEventListener('submit', handleCardDeleteSubmit);
 
 renderLoading(true);
+enableValidation(validationConfig);
 
 /*  Начальная загрузка данных профиля пользователя и списка карточек используя
     Promise.all() для гарантированного получения user_id до начала загрузки карточек
@@ -62,8 +63,6 @@ Promise.all(promises)
     .finally(() => {
         renderLoading(false);
     })
-
-enableValidation(validationConfig);
 
 
 function handleAddButton() {
@@ -106,6 +105,7 @@ function handleProfileSubmit(event) {
             profileTitle.textContent = data.name;
             profileDescription.textContent = data.about;
             closePopup(profilePopup);
+            clearValidation(editProfileForm, validationConfig);
         })
         .catch((err) => {
             console.error(err);
@@ -113,8 +113,6 @@ function handleProfileSubmit(event) {
         .finally(() => {
             setButtonName(profilePopup, 'Сохранить');
         });
-
-    clearValidation(editProfileForm, validationConfig);
 }
 
 
@@ -130,6 +128,8 @@ function handleNewCardSubmit(event) {
         .then((data) => {
             placesList.prepend(createCard(getNewCardObject(data)));
             closePopup(newCardPopup);
+            newPlaceForm.reset();
+            clearValidation(newPlaceForm, validationConfig);
         })
         .catch((err) => {
             console.error(err);
@@ -137,9 +137,6 @@ function handleNewCardSubmit(event) {
         .finally(() => {
             setButtonName(newCardPopup, 'Сохранить');
         });
-
-    newPlaceForm.reset();
-    clearValidation(newPlaceForm, validationConfig);
 }
 
 
