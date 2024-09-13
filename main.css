@@ -571,6 +571,7 @@ template {
 }
 
 @media screen and (max-width: 480px) {
+  
   .profile__edit-button {
     width: 18px;
     height: 18px;
@@ -578,44 +579,6 @@ template {
   }
 }
 
-.profile__avatar-button{
-    width: 28px;
-    height: 28px;
-    background: transparent url(images/edit-icon.8667ac4a523e8fc42e59.svg) center no-repeat;
-    background-size: 26px 26px;
-    border: none;
-    cursor: pointer;
-    position: absolute;
-    top: calc(50% - 14px);
-    left: calc(50% - 14px);
-    -webkit-transition: 0.3s;
-    -moz-transition: 0.3s;
-    -ms-transition: 0.3s;
-    -o-transition: 0.3s;
-    transition: 0.3s;
-    opacity: 0;
-    z-index: 1;
-}
-
-.profile__avatar-button:focus-visible{
-    opacity: 1;
-}
-
-.avatar__mask {
-    position: absolute;
-    background: #000;
-    inset: 0;
-    opacity: 0;
-    -webkit-transition: 0.3s;
-    -moz-transition: 0.3s;
-    -ms-transition: 0.3s;
-    -o-transition: 0.3s;
-    transition: 0.3s;
-}
-
-.profile__avatar-button:focus-visible + .avatar__mask{
-    opacity: 0.7;
-}
 .profile__info {
   display: grid;
   grid-template-areas: "title button"
@@ -697,6 +660,51 @@ template {
   margin: 0 29px 0 0;
 }
 
+.profile__image::before {
+  content: '';
+  width: 28px;
+  height: 28px;
+  background: transparent url(images/edit-icon.8667ac4a523e8fc42e59.svg) center no-repeat;
+  background-size: 26px 26px;
+  border: none;
+  position: absolute;
+  top: calc(50% - 14px);
+  left: calc(50% - 14px);
+  -webkit-transition: 0.3s;
+  -moz-transition: 0.3s;
+  -ms-transition: 0.3s;
+  -o-transition: 0.3s;
+  transition: 0.3s;
+  opacity: 0;
+  z-index: 1;
+  cursor: pointer;
+}
+
+.profile__image:hover::before{
+  opacity: 1;
+  
+}
+
+.profile__image::after{
+  content: '';
+  position: absolute;
+  background: #000;
+  inset: 0;
+  opacity: 0;
+  border-radius: 50%;
+  -webkit-transition: 0.3s;
+  -moz-transition: 0.3s;
+  -ms-transition: 0.3s;
+  -o-transition: 0.3s;
+  transition: 0.3s;
+}
+
+.profile__image:hover::after{
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+
 @media screen and (max-width: 740px) {
 
   .profile__image {
@@ -709,14 +717,6 @@ template {
   .profile__image {
     margin-right: 0;
   }
-}
-
-.profile__image:hover .profile__avatar-button {
-  opacity: 1;
-}
-
-.profile__image:hover .avatar__mask {
-  opacity: .7;
 }
 .profile {
   font-family: 'Inter', Arial, sans-serif;
@@ -887,8 +887,12 @@ template {
   border-radius: 10px;
   position: relative;
   overflow: hidden;
+  transition: transform .3s;
 }
 
+.card:hover {
+  transform: scale(1.05);
+}
 .popup__content {
   max-width: 430px;
   width: 100%;
