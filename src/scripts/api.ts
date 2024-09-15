@@ -1,6 +1,6 @@
 export class Api {
 
-    private apiConfig = {
+    private static apiConfig = {
         baseUrl: 'https://nomoreparties.co/v1/wff-cohort-22',
         headers: {
             authorization: '414f8694-193c-4196-bcbb-74dcac9ca435',
@@ -8,22 +8,23 @@ export class Api {
         }
     }
 
+    private constructor() { }
 
-    getProfile() {
+    static getProfile(): Promise<any> {
         return fetch(`${this.apiConfig.baseUrl}/users/me`, {
             headers: this.apiConfig.headers
         }).then(this.checkResponseStatus)
     }
 
 
-    getCards() {
+    static getCards(): Promise<any> {
         return fetch(`${this.apiConfig.baseUrl}/cards`, {
             headers: this.apiConfig.headers
         }).then(this.checkResponseStatus);
     }
 
 
-    saveProfile(userName: string, userDescription: string) {
+    static saveProfile(userName: string, userDescription: string): Promise<any> {
         return fetch(`${this.apiConfig.baseUrl}/users/me`, {
             method: 'PATCH',
             headers: this.apiConfig.headers,
@@ -35,7 +36,7 @@ export class Api {
     }
 
 
-    saveAvatar(avatarLink: string) {
+    static saveAvatar(avatarLink: string): Promise<any> {
         return fetch(`${this.apiConfig.baseUrl}/users/me/avatar`, {
             method: 'PATCH',
             headers: this.apiConfig.headers,
@@ -46,7 +47,7 @@ export class Api {
     }
 
 
-    saveCard(name: string, link: string) {
+    static saveCard(name: string, link: string): Promise<any> {
         return fetch(`${this.apiConfig.baseUrl}/cards`, {
             method: 'POST',
             headers: this.apiConfig.headers,
@@ -58,7 +59,7 @@ export class Api {
     }
 
 
-    deleteCard(cardId: string) {
+    static deleteCard(cardId: string): Promise<any> {
         return fetch(`${this.apiConfig.baseUrl}/cards/${cardId}`, {
             method: 'DELETE',
             headers: this.apiConfig.headers
@@ -66,7 +67,7 @@ export class Api {
     }
 
 
-    like(cardId: string) {
+    static like(cardId: string): Promise<any> {
         return fetch(`${this.apiConfig.baseUrl}/cards/likes/${cardId}`, {
             method: 'PUT',
             headers: this.apiConfig.headers
@@ -74,7 +75,7 @@ export class Api {
     }
 
 
-    dislike(cardId: string) {
+    static dislike(cardId: string): Promise<any> {
         return fetch(`${this.apiConfig.baseUrl}/cards/likes/${cardId}`, {
             method: 'DELETE',
             headers: this.apiConfig.headers
@@ -82,7 +83,7 @@ export class Api {
     }
 
 
-    private checkResponseStatus(response: Response) {
+    private static checkResponseStatus(response: Response): Promise<any> {
         if (response.ok)
             return response.json();
 

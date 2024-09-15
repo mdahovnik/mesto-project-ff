@@ -2,17 +2,24 @@ import { Config } from './constants';
 
 
 export class Popup {
-    config: Config;
+    
+    private static _popup: Popup = null;
 
-    constructor(config: Config) {
-        this.config = config;
+    static get getPopup(): Popup {
+        if (!this._popup) {
+            this._popup = new Popup();
+            return this._popup;
+        }
+        return this._popup;
     }
+
+    private constructor() { }
 
     openPopup(popupType: HTMLDivElement): void {
         document.addEventListener('keydown', this.handleOnKeydown);
         popupType.addEventListener('click', this.handleOnClick);
         popupType.classList.add('popup_is-opened');
-        this.config.page.classList.add('page-no-scroll');
+        Config.page.classList.add('page-no-scroll');
     }
 
 
@@ -20,7 +27,7 @@ export class Popup {
         document.removeEventListener('keydown', this.handleOnKeydown);
         popupType.removeEventListener('click', this.handleOnClick);
         popupType.classList.remove('popup_is-opened');
-        this.config.page.classList.remove('page-no-scroll');
+        Config.page.classList.remove('page-no-scroll');
     }
 
 

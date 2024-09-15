@@ -2,14 +2,21 @@ import { Config } from "./constants";
 
 
 export class Validation {
-    config: Config;
 
-    constructor(config: Config) {
-        this.config = config;
+    private static _validation: Validation = null;
+
+    static get getValidation(): Validation {
+        if (!this._validation) {
+            this._validation = new Validation();
+            return this._validation;
+        }
+        return this._validation;
     }
 
+    private constructor() { }
+
     enableValidation() {
-        const formList = Array.from(document.querySelectorAll(this.config.validationConfig.formSelector));
+        const formList = Array.from(document.querySelectorAll(Config.validationConfig.formSelector));
         formList.forEach((form: HTMLFormElement) => {
             this.setInputEventListeners(form)
         })
@@ -17,24 +24,24 @@ export class Validation {
 
 
     clearValidation(form: HTMLFormElement) {
-        const inputList = Array.from(form.querySelectorAll(this.config.validationConfig.inputSelector));
-        const submitButton = form.querySelector(this.config.validationConfig.submitButtonSelector) as HTMLButtonElement;
+        const inputList = Array.from(form.querySelectorAll(Config.validationConfig.inputSelector));
+        const submitButton = form.querySelector(Config.validationConfig.submitButtonSelector) as HTMLButtonElement;
 
         this.toggleButtonState(inputList, submitButton);
 
         inputList.forEach((input: HTMLInputElement) => {
-            input.classList.remove(this.config.validationConfig.inputErrorClass);
+            input.classList.remove(Config.validationConfig.inputErrorClass);
             const inputError = form.querySelector(`.${input.id}-error`);
 
-            inputError.classList.remove(this.config.validationConfig.errorClass);
+            inputError.classList.remove(Config.validationConfig.errorClass);
             inputError.textContent = '';
         })
     }
 
 
     private setInputEventListeners(form: HTMLFormElement) {
-        const inputList = Array.from(form.querySelectorAll(this.config.validationConfig.inputSelector));
-        const submitButton = form.querySelector(this.config.validationConfig.submitButtonSelector) as HTMLButtonElement;
+        const inputList = Array.from(form.querySelectorAll(Config.validationConfig.inputSelector));
+        const submitButton = form.querySelector(Config.validationConfig.submitButtonSelector) as HTMLButtonElement;
 
         this.toggleButtonState(inputList, submitButton);
 
@@ -65,16 +72,16 @@ export class Validation {
 
     private showError(form: HTMLFormElement, input: HTMLInputElement, errorMessage: string) {
         const inputError = form.querySelector(`.${input.id}-error`);
-        input.classList.add(this.config.validationConfig.inputErrorClass);
+        input.classList.add(Config.validationConfig.inputErrorClass);
         inputError.textContent = errorMessage;
-        inputError.classList.add(this.config.validationConfig.errorClass);
+        inputError.classList.add(Config.validationConfig.errorClass);
     }
 
 
     private hideError(form: HTMLFormElement, input: HTMLInputElement) {
         const inputError = form.querySelector(`.${input.id}-error`);
-        input.classList.remove(this.config.validationConfig.inputErrorClass);
-        inputError.classList.remove(this.config.validationConfig.errorClass);
+        input.classList.remove(Config.validationConfig.inputErrorClass);
+        inputError.classList.remove(Config.validationConfig.errorClass);
         inputError.textContent = '';
     }
 
@@ -82,10 +89,10 @@ export class Validation {
     private toggleButtonState(inputList: Element[], button: HTMLButtonElement) {
         if (this.hasInvalidInput(inputList)) {
             button.disabled = true;
-            button.classList.add(this.config.validationConfig.inactiveButtonClass);
+            button.classList.add(Config.validationConfig.inactiveButtonClass);
         } else {
             button.disabled = false;
-            button.classList.remove(this.config.validationConfig.inactiveButtonClass);
+            button.classList.remove(Config.validationConfig.inactiveButtonClass);
         }
     }
 

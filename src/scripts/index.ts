@@ -1,24 +1,22 @@
 import '../pages/index.css';
 import { Config } from "./constants";
-import { cardToDelete, Card, User } from './card';
+import { Card, User } from './card';
 import { Popup } from './modal';
 import { Api } from './api';
 import { Validation } from './validation';
 
-const config: Config = new Config();
-const popup: Popup = new Popup(config);
-const api: Api = new Api();
-const validation: Validation = new Validation(config);
+const popup: Popup = Popup.getPopup;
+const validation: Validation = Validation.getValidation;
 
-config.newPlaceForm.addEventListener('submit', handleNewCardSubmit);
-config.editProfileForm.addEventListener('submit', handleProfileSubmit);
-config.avatarForm.addEventListener('submit', handleAvatarSubmit);
+Config.newPlaceForm.addEventListener('submit', handleNewCardSubmit);
+Config.editProfileForm.addEventListener('submit', handleProfileSubmit);
+Config.avatarForm.addEventListener('submit', handleAvatarSubmit);
 
-config.addButton.addEventListener('click', handleAddButton);
-config.editButton.addEventListener('click', handleEditButton);
-config.profileAvatar.addEventListener('click', handleAvatarButton);
+Config.addButton.addEventListener('click', handleAddButton);
+Config.editButton.addEventListener('click', handleEditButton);
+Config.profileAvatar.addEventListener('click', handleAvatarButton);
 
-config.deleteCardPopup.addEventListener('submit', handleCardDeleteSubmit);
+Config.deleteCardPopup.addEventListener('submit', handleCardDeleteSubmit);
 
 let user: User = null;
 renderLoading(true);
@@ -27,18 +25,18 @@ validation.enableValidation();
 /*  Начальная загрузка данных профиля пользователя и списка карточек используя
     Promise.all() для гарантированного получения user_id до начала загрузки карточек
 */
-Promise.all([api.getProfile(), api.getCards()])
+Promise.all([Api.getProfile(), Api.getCards()])
     .then(([profileData, cardsData]) => {
         user = new User(profileData);
-
-        config.profile.dataset.userId = user._id;
-        config.profileAvatar.setAttribute('style', `background-image: url(${user.avatar})`);
-        config.profileTitle.textContent = user.name;
-        config.profileDescription.textContent = user.about;
+        
+        Config.profile.dataset.userId = user._id;
+        Config.profileAvatar.setAttribute('style', `background-image: url(${user.avatar})`);
+        Config.profileTitle.textContent = user.name;
+        Config.profileDescription.textContent = user.about;
 
         cardsData.forEach(cardItem => {
             const card: Card = new Card(cardItem);
-            config.placesList.append(card.createElement(user, handleCardClick));
+            Config.placesList.append(card.createCardElement(user));
         });
     })
     .catch((err) => {
@@ -50,78 +48,70 @@ Promise.all([api.getProfile(), api.getCards()])
 
 
 function handleAddButton() {
-    config.newPlaceForm.reset();
-    validation.clearValidation(config.newPlaceForm);
-    popup.openPopup(config.newCardPopup);
+    Config.newPlaceForm.reset();
+    validation.clearValidation(Config.newPlaceForm);
+    popup.openPopup(Config.newCardPopup);
 }
 
 
 function handleEditButton() {
-    config.profileNameInput.value = config.profileTitle.textContent;
-    config.descriptionInput.value = config.profileDescription.textContent;
-    validation.clearValidation(config.editProfileForm);
-    popup.openPopup(config.profilePopup);
+    Config.profileNameInput.value = Config.profileTitle.textContent;
+    Config.descriptionInput.value = Config.profileDescription.textContent;
+    validation.clearValidation(Config.editProfileForm);
+    popup.openPopup(Config.profilePopup);
 }
 
 
 function handleAvatarButton() {
-    config.avatarForm.reset();
-    validation.clearValidation(config.avatarForm);
-    popup.openPopup(config.avatarPopup);
-}
-
-
-function handleCardClick(cardImageLink: string, cardName: string) {
-    (config.imagePopup.querySelector('.popup__image') as HTMLImageElement).src = cardImageLink;
-    (config.imagePopup.querySelector('.popup__image') as HTMLImageElement).alt = cardName;
-    (config.imagePopup.querySelector('.popup__caption') as HTMLImageElement).textContent = cardName;
-    popup.openPopup(config.imagePopup);
+    Config.avatarForm.reset();
+    validation.clearValidation(Config.avatarForm);
+    popup.openPopup(Config.avatarPopup);
 }
 
 
 function handleProfileSubmit(event: SubmitEvent) {
     event.preventDefault();
 
-    setButtonName(config.profilePopup, 'Сохранение...');
+    setButtonName(Config.profilePopup, 'Сохранение...');
 
-    api.saveProfile(config.profileNameInput.value, config.descriptionInput.value)
+    Api.saveProfile(Config.profileNameInput.value, Config.descriptionInput.value)
         .then((data) => {
-            config.profileTitle.textContent = data.name;
-            config.profileDescription.textContent = data.about;
+            Config.profileTitle.textContent = data.name;
+            Config.profileDescription.textContent = data.about;
 
-            popup.closePopup(config.profilePopup);
-            validation.clearValidation(config.editProfileForm);
+            popup.closePopup(Config.profilePopup);
+            validation.clearValidation(Config.editProfileForm);
         })
         .catch((err) => {
             console.error(err);
         })
         .finally(() => {
-            setButtonName(config.profilePopup, 'Сохранить');
+            setButtonName(Config.profilePopup, 'Сохранить');
         });
 }
 
 
 function handleNewCardSubmit(event: SubmitEvent) {
     event.preventDefault();
-    const newCardName = getValidCardName(config.cardNameInput.value);
-    const newCardImageAddress = config.cardUrlInput.value;
+    const newCardName = getValidCardName(Config.cardNameInput.value);
+    const newCardImageAddress = Config.cardUrlInput.value;
 
-    setButtonName(config.newCardPopup, 'Сохранение...');
+    setButtonName(Config.newCardPopup, 'Сохранение...');
 
-    api.saveCard(newCardName, newCardImageAddress)
+    Api.saveCard(newCardName, newCardImageAddress)
         .then((cardItem) => {
             const card: Card = new Card(cardItem);
-            config.placesList.prepend(card.createElement(user, handleCardClick));
+            Config.placesList.prepend(card.createCardElement(user));
 
-            popup.closePopup(config.newCardPopup);
-            config.newPlaceForm.reset();
-            validation.clearValidation(config.newPlaceForm);
+            popup.closePopup(Config.newCardPopup);
+            Config.newPlaceForm.reset();
+            validation.clearValidation(Config.newPlaceForm);
         })
         .catch((err) => {
             console.error(err);
         })
         .finally(() => {
-            setButtonName(config.newCardPopup, 'Сохранить');
+            setButtonName(Config.newCardPopup, 'Сохранить');
         });
 }
 
@@ -129,34 +119,34 @@ function handleNewCardSubmit(event: SubmitEvent) {
 function handleAvatarSubmit(event: SubmitEvent) {
     event.preventDefault();
 
-    const avatarImageAddress = config.avatarUrlInput.value;
+    const avatarImageAddress = Config.avatarUrlInput.value;
 
-    setButtonName(config.avatarPopup, 'Сохранение...');
+    setButtonName(Config.avatarPopup, 'Сохранение...');
 
-    api.saveAvatar(avatarImageAddress)
+    Api.saveAvatar(avatarImageAddress)
         .then((data) => {
-            config.profileAvatar.setAttribute('style', `background-image: url(${data.avatar})`);
-            popup.closePopup(config.avatarPopup);
+            Config.profileAvatar.setAttribute('style', `background-image: url(${data.avatar})`);
+            popup.closePopup(Config.avatarPopup);
         })
         .catch((err) => {
             console.error(err);
         })
         .finally(() => {
-            setButtonName(config.avatarPopup, 'Сохранить');
+            setButtonName(Config.avatarPopup, 'Сохранить');
         });
 }
 
 
 function handleCardDeleteSubmit(event: SubmitEvent) {
     event.preventDefault();
-    const cardId = cardToDelete.card.dataset.cardId;
-
-    api.deleteCard(cardId)
+    console.log(Config.cardToDelete);
+    const cardId = Config.cardToDelete.card.dataset.cardId;
+    Api.deleteCard(cardId)
         .then(() => {
-            if (cardToDelete.card) {
-                cardToDelete.card.remove();
-                popup.closePopup(config.deleteCardPopup);
-                cardToDelete.card = null;
+            if (Config.cardToDelete.card) {
+                Config.cardToDelete.card.remove();
+                popup.closePopup(Config.deleteCardPopup);
+                Config.cardToDelete.card = null;
             }
         })
         .catch((err) => {
@@ -180,8 +170,8 @@ function setButtonName(popup: HTMLDivElement, name: string) {
 
 function renderLoading(isLoading: boolean) {
     if (isLoading) {
-        config.spinner.classList.add('spinner_visible');
+        Config.spinner.classList.add('spinner_visible');
     } else {
-        config.spinner.classList.remove('spinner_visible');
+        Config.spinner.classList.remove('spinner_visible');
     }
 }
