@@ -57,16 +57,13 @@ export class Validation {
     private checkInputValidation(form: HTMLFormElement, input: HTMLInputElement) {
         if (input.validity.patternMismatch) {
             input.setCustomValidity(input.dataset.errorMessage);
-        } else {
-            input.setCustomValidity("");
         }
+        else input.setCustomValidity("");
 
         if (!input.validity.valid) {
             this.showError(form, input, input.validationMessage);
         }
-        else {
-            this.hideError(form, input);
-        }
+        else this.hideError(form, input);
     }
 
 

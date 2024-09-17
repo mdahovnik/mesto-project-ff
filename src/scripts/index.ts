@@ -5,6 +5,9 @@ import { Popup } from './modal';
 import { Api } from './api';
 import { Validation } from './validation';
 
+class App {
+
+}
 const popup: Popup = Popup.getPopup;
 const validation: Validation = Validation.getValidation;
 
@@ -22,13 +25,14 @@ let user: User = null;
 renderLoading(true);
 validation.enableValidation();
 
+
 /*  Начальная загрузка данных профиля пользователя и списка карточек используя
     Promise.all() для гарантированного получения user_id до начала загрузки карточек
 */
 Promise.all([Api.getProfile(), Api.getCards()])
     .then(([profileData, cardsData]) => {
         user = new User(profileData);
-        
+
         Config.profile.dataset.userId = user._id;
         Config.profileAvatar.setAttribute('style', `background-image: url(${user.avatar})`);
         Config.profileTitle.textContent = user.name;
@@ -69,89 +73,71 @@ function handleAvatarButton() {
 }
 
 
-function handleProfileSubmit(event: SubmitEvent) {
+async function handleProfileSubmit(event: SubmitEvent) {
     event.preventDefault();
-
     setButtonName(Config.profilePopup, 'Сохранение...');
 
-    Api.saveProfile(Config.profileNameInput.value, Config.descriptionInput.value)
-        .then((data) => {
-            Config.profileTitle.textContent = data.name;
-            Config.profileDescription.textContent = data.about;
+    const profileData = await Api.saveProfile(Config.profileNameInput.value, Config.descriptionInput.value)
+        .catch((err) => { console.error(err) });
 
-            popup.closePopup(Config.profilePopup);
-            validation.clearValidation(Config.editProfileForm);
-        })
-        .catch((err) => {
-            console.error(err);
-        })
-        .finally(() => {
-            setButtonName(Config.profilePopup, 'Сохранить');
-        });
+    Config.profileTitle.textContent = profileData.name;
+    Config.profileDescription.textContent = profileData.about;
+
+    popup.closePopup(Config.profilePopup);
+    validation.clearValidation(Config.editProfileForm);
+    setButtonName(Config.profilePopup, 'Сохранить');
 }
 
 
-function handleNewCardSubmit(event: SubmitEvent) {
+async function handleNewCardSubmit(event: SubmitEvent) {
     event.preventDefault();
+    setButtonName(Config.newCardPopup, 'Сохранение...');
+
     const newCardName = getValidCardName(Config.cardNameInput.value);
     const newCardImageAddress = Config.cardUrlInput.value;
 
-    setButtonName(Config.newCardPopup, 'Сохранение...');
+    const cardData = await Api.saveCard(newCardName, newCardImageAddress)
+        .catch((err) => { console.error(err); });
 
-    Api.saveCard(newCardName, newCardImageAddress)
-        .then((cardItem) => {
-            const card: Card = new Card(cardItem);
-            Config.placesList.prepend(card.createCardElement(user));
+    const card: Card = new Card(cardData);
 
-            popup.closePopup(Config.newCardPopup);
-            Config.newPlaceForm.reset();
-            validation.clearValidation(Config.newPlaceForm);
-        })
-        .catch((err) => {
-            console.error(err);
-        })
-        .finally(() => {
-            setButtonName(Config.newCardPopup, 'Сохранить');
-        });
+    Config.placesList.prepend(card.createCardElement(user));
+
+    popup.closePopup(Config.newCardPopup);
+    Config.newPlaceForm.reset();
+    validation.clearValidation(Config.newPlaceForm);
+    setButtonName(Config.newCardPopup, 'Сохранить');
 }
 
 
-function handleAvatarSubmit(event: SubmitEvent) {
+async function handleAvatarSubmit(event: SubmitEvent) {
     event.preventDefault();
+    setButtonName(Config.avatarPopup, 'Сохранение...');
 
     const avatarImageAddress = Config.avatarUrlInput.value;
 
-    setButtonName(Config.avatarPopup, 'Сохранение...');
+    const avatarData = await Api.saveAvatar(avatarImageAddress)
+        .catch((err) => { console.error(err); });
 
-    Api.saveAvatar(avatarImageAddress)
-        .then((data) => {
-            Config.profileAvatar.setAttribute('style', `background-image: url(${data.avatar})`);
-            popup.closePopup(Config.avatarPopup);
-        })
-        .catch((err) => {
-            console.error(err);
-        })
-        .finally(() => {
-            setButtonName(Config.avatarPopup, 'Сохранить');
-        });
+    Config.profileAvatar.setAttribute('style', `background-image: url(${avatarData.avatar})`);
+
+    popup.closePopup(Config.avatarPopup);
+    setButtonName(Config.avatarPopup, 'Сохранить');
 }
 
 
-function handleCardDeleteSubmit(event: SubmitEvent) {
+async function handleCardDeleteSubmit(event: SubmitEvent) {
     event.preventDefault();
-    console.log(Config.cardToDelete);
-    const cardId = Config.cardToDelete.card.dataset.cardId;
-    Api.deleteCard(cardId)
-        .then(() => {
-            if (Config.cardToDelete.card) {
-                Config.cardToDelete.card.remove();
-                popup.closePopup(Config.deleteCardPopup);
-                Config.cardToDelete.card = null;
-            }
-        })
-        .catch((err) => {
-            console.error(err);
-        })
+
+    if (Config.cardToDelete.card) {
+        const cardId = Config.cardToDelete.card.dataset.cardId;
+
+        await Api.deleteCard(cardId).catch((err) => { console.error(err); })
+
+        Config.cardToDelete.card.remove();
+        popup.closePopup(Config.deleteCardPopup);
+        Config.cardToDelete.card = null;
+    }
 }
 
 

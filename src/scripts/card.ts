@@ -12,16 +12,8 @@ export class User {
     name: string;
     _id: string;
 
-    // constructor(object: { about: string, avatar: string, cohort: string, name: string, _id: string }) {
-    //     this.about = object.about;
-    //     this.avatar = object.avatar;
-    //     this.cohort = object.cohort;
-    //     this.name = object.name;
-    //     this._id = object._id;
-    // }
-
-    constructor(init?: Partial<User>) {
-        Object.assign(this, init);
+    constructor(initObject?: Partial<User>) {
+        Object.assign(this, initObject);
     }
 }
 
@@ -34,15 +26,6 @@ export class Card {
     name: string;
     owner: Owner;
     _id: string;
-
-    // constructor(object: { createdAt: string, likes: User[], link: string, name: string, owner: Owner, _id: string }) {
-    //     this.createdAt = object.createdAt;
-    //     this.likes = object.likes;
-    //     this.link = object.link;
-    //     this.name = object.name;
-    //     this.owner = object.owner;
-    //     this.id = object._id;
-    // }
 
     constructor(init?: Partial<Card>) {
         Object.assign(this, init);
@@ -83,30 +66,24 @@ export class Card {
     }
 
 
-    private handleLikeButton(event: MouseEvent) {
+    private async handleLikeButton(event: MouseEvent) {
         const element = event.target as HTMLButtonElement
         const card = element.closest('.card') as HTMLLIElement;
         const likeCount = card.querySelector('.card__like-count') as HTMLSpanElement;
 
         if (!element.classList.contains('card__like-button_is-active')) {
-            Api.like(card.dataset.cardId)
-                .then((cardData) => {
-                    likeCount.textContent = cardData.likes.length;
-                    element.classList.add('card__like-button_is-active');
-                })
-                .catch((err) => {
-                    console.error(err);
-                })
+            const cardData = await Api.like(card.dataset.cardId)
+                .catch((err) => { console.error(err); });
+
+            likeCount.textContent = cardData.likes.length;
+            element.classList.add('card__like-button_is-active');
         }
         else {
-            Api.dislike(card.dataset.cardId)
-                .then((cardData) => {
-                    likeCount.textContent = cardData.likes.length;
-                    element.classList.remove('card__like-button_is-active');
-                })
-                .catch((err) => {
-                    console.error(err);
-                })
+            const cardData = await Api.dislike(card.dataset.cardId)
+                .catch((err) => { console.error(err); })
+
+            likeCount.textContent = cardData.likes.length;
+            element.classList.remove('card__like-button_is-active');
         }
     }
 

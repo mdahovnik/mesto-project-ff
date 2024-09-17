@@ -10,17 +10,19 @@ export class Api {
 
     private constructor() { }
 
-    static getProfile(): Promise<any> {
-        return fetch(`${this.apiConfig.baseUrl}/users/me`, {
+    static async getProfile(): Promise<any> {
+        const response = await fetch(`${this.apiConfig.baseUrl}/users/me`, {
             headers: this.apiConfig.headers
-        }).then(this.checkResponseStatus)
+        });
+        return this.checkResponseStatus(response);
     }
 
 
-    static getCards(): Promise<any> {
-        return fetch(`${this.apiConfig.baseUrl}/cards`, {
+    static async getCards(): Promise<any> {
+        const response = await fetch(`${this.apiConfig.baseUrl}/cards`, {
             headers: this.apiConfig.headers
-        }).then(this.checkResponseStatus);
+        });
+        return this.checkResponseStatus(response);
     }
 
 
@@ -89,4 +91,18 @@ export class Api {
 
         return Promise.reject(`Ошибка : ${response.statusText}`);
     }
+
+    static checkUrl() {
+        return fetch('https://wallpapers.com/images/hd/clear-snake-game-character-z6jd7jtsl04g6mxx.jpg', {
+            method: 'HEAD',
+            mode: 'no-cors'
+        }).then((response) => {
+            console.log('статус => ' + response.status);
+            console.log('тип данных => ' + response.headers.get('Content-Type'));
+            console.log('размер => ' + response.headers.get('Content-Length'));
+        }).catch((err) => {
+            throw Error(err);
+        })
+    }
 }
+// cache-control
